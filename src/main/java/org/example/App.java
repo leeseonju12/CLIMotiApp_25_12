@@ -3,25 +3,17 @@ package org.example;
 import org.example.motivation.controller.MotivationController;
 import org.example.system.controller.SystemController;
 
-import java.util.Scanner;
-
 public class App {
-
-    private Scanner sc;
-
-    public App(Scanner sc) {
-        this.sc = sc;
-    }
 
     public void run() {
         System.out.println("== motivation 실행 ==");
 
         SystemController systemController = new SystemController();
-        MotivationController motivationController = new MotivationController(sc);
+        MotivationController motivationController = new MotivationController();
 
         while (true) {
             System.out.print("명령어 ) ");
-            String cmd = sc.nextLine().trim();
+            String cmd = Container.getSc().nextLine().trim();
 
             if (cmd.equals("exit")) {
                 systemController.exit();
@@ -32,18 +24,18 @@ public class App {
             }
 
             if (cmd.equals("add")) {
-                motivationController.add();
+                motivationController.doAdd();
             } else if (cmd.equals("list")) {
-                motivationController.list();
+                motivationController.showList();
+            } else if (cmd.startsWith("del?")) {
+                motivationController.newDoDelete(cmd);
             } else if (cmd.startsWith("del")) {
-                motivationController.delete(cmd);
+                motivationController.doDelete(cmd);
             } else if (cmd.startsWith("edit")) {
-                motivationController.edit(cmd);
-            } else if (cmd.startsWith("detail")) {
-                motivationController.detail(cmd);
-            }
-
-            else {
+                motivationController.doEdit(cmd);
+            }  else if (cmd.startsWith("detail")) {
+                motivationController.showDetail(cmd);
+            } else {
                 System.out.println("사용할 수 없는 명령어야");
             }
         }
